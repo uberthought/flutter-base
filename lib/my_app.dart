@@ -1,22 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
 
 import 'go_router.dart';
 import 'state/app_state.dart';
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget with GetItStatefulWidgetMixin {
+  MyApp({super.key});
+
   static final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with GetItStateMixin {
   late final _initalize = Future(() async {
-    await AppState.initialize();
+    GetIt.I.registerSingleton(AppState());
   });
 
   @override
@@ -25,19 +27,12 @@ class _MyAppState extends State<MyApp> {
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) return Image.asset('assets/splash.png', fit: BoxFit.fill);
 
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider.value(value: AppState.instance),
-          ],
-          child: Builder(builder: (context) {
-            return MaterialApp.router(
-              routerConfig: goRouter,
-              debugShowCheckedModeBanner: context.select<AppState, bool>((e) => e.debugShowCheckedModeBanner.value),
-              onGenerateTitle: (context) => 'app title',
-              theme: ThemeData.light(useMaterial3: true),
-              darkTheme: ThemeData.dark(useMaterial3: true),
-            );
-          }),
+        return MaterialApp.router(
+          routerConfig: goRouter,
+          debugShowCheckedModeBanner: watchX<AppState, bool>((e) => e.debugShowCheckedModeBanner),
+          onGenerateTitle: (context) => 'app title',
+          theme: ThemeData.light(useMaterial3: true),
+          darkTheme: ThemeData.dark(useMaterial3: true),
         );
       });
 }

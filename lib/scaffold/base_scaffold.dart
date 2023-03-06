@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 import '../state/app_state.dart';
 import 'app_version_builder.dart';
 
-class BaseScaffold extends StatefulWidget {
-  const BaseScaffold({
+class BaseScaffold extends StatefulWidget with GetItStatefulWidgetMixin {
+  BaseScaffold({
     required this.body,
     this.showBottomBar = true,
     this.showAppBar = true,
@@ -23,7 +23,7 @@ class BaseScaffold extends StatefulWidget {
   State<BaseScaffold> createState() => BaseScaffoldState();
 }
 
-class BaseScaffoldState extends State<BaseScaffold> {
+class BaseScaffoldState extends State<BaseScaffold> with GetItStateMixin {
   Future<void> Function(BuildContext context) onBackTap = (context) async {
     final goRouter = GoRouter.of(context);
     try {
@@ -36,9 +36,7 @@ class BaseScaffoldState extends State<BaseScaffold> {
   @override
   Widget build(BuildContext context) {
     Widget body = SizedBox.expand(child: Padding(padding: widget.padding, child: widget.body));
-
-    final isTestMode = context.select<AppState, bool>((e) => e.isTestMode.value);
-
+    final isTestMode = watchX<AppState, bool>((e) => e.isTestMode);
     if (isTestMode) {
       body = Stack(children: [body, const _TestOverlay()]);
     }
@@ -49,12 +47,10 @@ class BaseScaffoldState extends State<BaseScaffold> {
       appBar: widget.showAppBar ? AppBar() : null,
       endDrawer: const Drawer(),
       bottomNavigationBar: widget.showBottomBar
-          ? BottomNavigationBar(
-              items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'Item 1'),
-                BottomNavigationBarItem(icon: Icon(Icons.ac_unit), label: 'Item 2'),
-              ],
-            )
+          ? BottomNavigationBar(items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'Item 1'),
+              BottomNavigationBarItem(icon: Icon(Icons.ac_unit), label: 'Item 2'),
+            ])
           : null,
     );
   }
@@ -66,25 +62,17 @@ class _TestOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 16,
-      right: 16,
-      child: IgnorePointer(
-        child: Builder(builder: (context) {
+        top: 16,
+        right: 16,
+        child: IgnorePointer(child: Builder(builder: (context) {
           final style = Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black.withOpacity(.5), fontSize: 16);
           return ColoredBox(
-            color: Colors.white30,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    AppVersionBuilder(builder: (_, version) => Text(' V$version', style: style)),
-                  ],
-                ),
-              ],
-            ),
-          );
-        }),
-      ),
-    );
+              color: Colors.white30,
+              child: Column(children: [
+                Row(children: [
+                  AppVersionBuilder(builder: (_, version) => Text(' V$version', style: style)),
+                ])
+              ]));
+        })));
   }
 }

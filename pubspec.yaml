@@ -10,6 +10,8 @@ dependencies:
   collection: ^1.17.0
   flutter:
     sdk: flutter
+  get_it: ^7.2.0
+  get_it_mixin: ^3.1.4+2
   go_router: ^6.2.0
   # hive: ^2.2.3
   # hive_flutter: ^1.1.0
@@ -18,7 +20,6 @@ dependencies:
   mockito: ^5.3.2
   package_info_plus: ^3.0.2
   # path_provider: ^2.0.11
-  provider: ^6.0.3
   # separated_column: ^2.0.0
   # separated_row: ^2.0.0
   shared_preferences: ^2.0.15
@@ -33,3 +34,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/splash.png
+    
