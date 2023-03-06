@@ -47,7 +47,7 @@ class BaseScaffoldState extends State<BaseScaffold> {
       onVisibilityChanged: (info) {},
       child: LayoutBuilder(
         builder: (context, constraints) {
-          Widget wrappedBody = Padding(padding: widget.padding, child: widget.body);
+          Widget wrappedBody = SizedBox.expand(child: Padding(padding: widget.padding, child: widget.body));
 
           final isTestMode = context.select<AppState, bool>((e) => e.isTestMode);
 

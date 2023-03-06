@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_base/state/app_state.dart';
 
 import '../scaffold/base_scaffold.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class DevelopeerPage extends StatelessWidget {
+  const DevelopeerPage({super.key});
 
   @override
   Widget build(BuildContext context) => const BaseScaffold(
@@ -20,8 +20,10 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ElevatedButton(onPressed: () => context.go('/developer'), child: const Text('Go to Developer page')),
-        const Placeholder(),
+        ElevatedButton(
+          onPressed: () => AppState.instance.isTestMode = !AppState.instance.isTestMode,
+          child: const Text('Toggle Test Mode'),
+        )
       ],
     );
   }

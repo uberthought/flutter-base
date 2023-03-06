@@ -5,5 +5,12 @@ class AppState extends ChangeNotifier {
   static Future<void> initialize() async => instance = AppState._();
   static late AppState instance;
 
-  var isTestMode = true;
+  var _isTestMode = true;
+
+  get isTestMode => _isTestMode;
+
+  set isTestMode(value) {
+    _isTestMode = value;
+    notifyListeners();
+  }
 }
