@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get_it_mixin/get_it_mixin.dart';
 
 import '../scaffold/base_scaffold.dart';
 
@@ -7,14 +6,14 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) => BaseScaffold(
+  Widget build(BuildContext context) => const BaseScaffold(
         body: _Body(),
         showBack: false,
       );
 }
 
-class _Body extends StatelessWidget with GetItMixin {
-  _Body();
+class _Body extends StatelessWidget {
+  const _Body();
 
   @override
   Widget build(BuildContext context) {

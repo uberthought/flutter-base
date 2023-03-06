@@ -1,9 +1,10 @@
+
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
 import 'pages/home_page.dart';
 
-final routerDefinition = GoRouter(
+final goRouter = GoRouter(
     initialLocation: kReleaseMode ? '/' : '/',
     redirect: (context, state) {
       return null;

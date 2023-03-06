@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'router_definition.dart';
+import 'go_router.dart';
+import 'state/app_state.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -13,20 +15,27 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _initalize = Future(() async {});
+  late final _initalize = Future(() async {
+    await AppState.initialize();
+  });
 
   @override
   Widget build(BuildContext context) => FutureBuilder<void>(
       future: _initalize,
       builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) return Image.asset('assets/splash.jpg', fit: BoxFit.fill);
+        if (snapshot.connectionState != ConnectionState.done) return Image.asset('assets/splash.png', fit: BoxFit.fill);
 
-        return MaterialApp.router(
-          routerConfig: routerDefinition,
-          debugShowCheckedModeBanner: false,
-          onGenerateTitle: (context) => 'app title',
-          theme: ThemeData.light(useMaterial3: true),
-          darkTheme: ThemeData.dark(useMaterial3: true),
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider.value(value: AppState.instance),
+          ],
+          child: MaterialApp.router(
+            routerConfig: goRouter,
+            // debugShowCheckedModeBanner: false,
+            onGenerateTitle: (context) => 'app title',
+            theme: ThemeData.light(useMaterial3: true),
+            darkTheme: ThemeData.dark(useMaterial3: true),
+          ),
         );
       });
 }

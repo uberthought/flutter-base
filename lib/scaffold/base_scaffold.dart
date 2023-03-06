@@ -1,14 +1,15 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../state/app_state.dart';
 import 'app_version_builder.dart';
 
-class BaseScaffold extends StatefulWidget with GetItStatefulWidgetMixin {
-  BaseScaffold({
+class BaseScaffold extends StatefulWidget {
+  const BaseScaffold({
     required this.body,
     this.showMenu = true,
     this.showBottomBar = true,
@@ -27,7 +28,7 @@ class BaseScaffold extends StatefulWidget with GetItStatefulWidgetMixin {
   State<BaseScaffold> createState() => BaseScaffoldState();
 }
 
-class BaseScaffoldState extends State<BaseScaffold> with GetItStateMixin {
+class BaseScaffoldState extends State<BaseScaffold> {
   Future<void> Function(BuildContext context) onBackTap = (context) async {
     final goRouter = GoRouter.of(context);
     try {
@@ -48,8 +49,7 @@ class BaseScaffoldState extends State<BaseScaffold> with GetItStateMixin {
         builder: (context, constraints) {
           Widget wrappedBody = Padding(padding: widget.padding, child: widget.body);
 
-          // final isTestMode = watchOnly<AppState, bool>((e) => e.isTestMode);
-          const isTestMode = true;
+          final isTestMode = context.select<AppState, bool>((e) => e.isTestMode);
 
           if (isTestMode) {
             wrappedBody = Stack(
