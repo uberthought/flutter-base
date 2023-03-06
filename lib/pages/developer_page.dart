@@ -9,7 +9,6 @@ class DevelopeerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const BaseScaffold(
         body: _Body(),
-        showBack: false,
       );
 }
 
@@ -20,10 +19,8 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ElevatedButton(
-          onPressed: () => AppState.instance.isTestMode = !AppState.instance.isTestMode,
-          child: const Text('Toggle Test Mode'),
-        )
+        ElevatedButton(onPressed: AppState.instance.isTestMode.toggle, child: const Text('Toggle Test Mode')),
+        ElevatedButton(onPressed: AppState.instance.debugShowCheckedModeBanner.toggle, child: const Text('Toggle Debug Banner')),
       ],
     );
   }

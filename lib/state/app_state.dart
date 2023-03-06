@@ -1,16 +1,41 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppState extends ChangeNotifier {
-  AppState._();
-  static Future<void> initialize() async => instance = AppState._();
   static late AppState instance;
 
-  var _isTestMode = true;
+  AppState._();
+  static Future<void> initialize() async {
+    instance = AppState._();
+    await instance._initialize();
+  }
 
-  get isTestMode => _isTestMode;
+  Future<void> _initialize() async {
+    isTestMode.addListener(notifyListeners);
+    debugShowCheckedModeBanner.addListener(notifyListeners);
+  }
 
-  set isTestMode(value) {
-    _isTestMode = value;
-    notifyListeners();
+  final isTestMode = Feature(true, 'isTestMode');
+  final debugShowCheckedModeBanner = Feature(true, 'debugShowCheckedModeBanner');
+}
+
+class Feature extends ValueNotifier<bool> {
+  late final SharedPreferences _prefs;
+  String key;
+
+  Feature(super.value, this.key) {
+    unawaited(_initialize());
+  }
+
+  Future<void> _initialize() async {
+    _prefs = await SharedPreferences.getInstance();
+    value = _prefs.getBool(key) ?? value;
+  }
+
+  void toggle() {
+    value = !value;
+    _prefs.setBool(key, value);
   }
 }

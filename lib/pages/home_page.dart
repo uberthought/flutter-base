@@ -9,7 +9,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const BaseScaffold(
         body: _Body(),
-        showBack: false,
       );
 }
 

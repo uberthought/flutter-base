@@ -29,13 +29,15 @@ class _MyAppState extends State<MyApp> {
           providers: [
             ChangeNotifierProvider.value(value: AppState.instance),
           ],
-          child: MaterialApp.router(
-            routerConfig: goRouter,
-            // debugShowCheckedModeBanner: false,
-            onGenerateTitle: (context) => 'app title',
-            theme: ThemeData.light(useMaterial3: true),
-            darkTheme: ThemeData.dark(useMaterial3: true),
-          ),
+          child: Builder(builder: (context) {
+            return MaterialApp.router(
+              routerConfig: goRouter,
+              debugShowCheckedModeBanner: context.select<AppState, bool>((e) => e.debugShowCheckedModeBanner.value),
+              onGenerateTitle: (context) => 'app title',
+              theme: ThemeData.light(useMaterial3: true),
+              darkTheme: ThemeData.dark(useMaterial3: true),
+            );
+          }),
         );
       });
 }
