@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/state/app_state.dart';
+import 'package:flutter_base/state/user_state.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
 import '../scaffold/base_scaffold.dart';
 
-class DevelopeerPage extends StatelessWidget {
-  const DevelopeerPage({super.key});
+class DeveloperPage extends StatelessWidget {
+  const DeveloperPage({super.key});
 
   @override
   Widget build(BuildContext context) => BaseScaffold(body: _Body());
@@ -21,6 +22,11 @@ class _Body extends StatelessWidget with GetItMixin {
         ElevatedButton(
           onPressed: get<AppState>().debugShowCheckedModeBanner.toggle,
           child: const Text('Toggle Debug Banner'),
+        ),
+        if (watchX<UserState, bool>((e) => e.isLoggedIn)) const Text('Is Logged In') else const Text('Is Not Logged In'),
+        ElevatedButton(
+          onPressed: () => get<UserState>().isLoggedIn.value = !get<UserState>().isLoggedIn.value,
+          child: const Text('Toggle Logged In'),
         ),
       ]);
 }

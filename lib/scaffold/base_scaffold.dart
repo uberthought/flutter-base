@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/state/user_state.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,17 +36,30 @@ class BaseScaffoldState extends State<BaseScaffold> with GetItStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    Widget body = SizedBox.expand(child: Padding(padding: widget.padding, child: widget.body));
+    Widget body = Padding(padding: widget.padding, child: widget.body);
     final isTestMode = watchX<AppState, bool>((e) => e.isTestMode);
     if (isTestMode) {
-      body = Stack(children: [body, const _TestOverlay()]);
+      body = Stack(alignment: Alignment.center, children: [body, const _TestOverlay()]);
     }
 
     return Scaffold(
-      body: body,
+      body: CustomScrollView(slivers: [
+        if (widget.showAppBar)
+          SliverAppBar(
+            actions: [
+              if (watchX<UserState, bool>((e) => e.isLoggedIn)) IconButton(onPressed: () {}, icon: const Icon(Icons.account_circle)) else ElevatedButton(onPressed: () {}, child: const Text('LOGIN')),
+            ],
+          ),
+        SliverToBoxAdapter(child: body),
+      ]),
       extendBody: true,
-      appBar: widget.showAppBar ? AppBar() : null,
-      endDrawer: const Drawer(),
+      // appBar: widget.showAppBar
+      //     ? AppBar(
+
+      //         actions: [ElevatedButton(onPressed: () {}, child: const Text('LOGIN'))],
+      //       )
+      //     : null,
+      // drawer: const Drawer(),
       bottomNavigationBar: widget.showBottomBar
           ? BottomNavigationBar(items: const [
               BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'Item 1'),
