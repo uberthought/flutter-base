@@ -18,6 +18,6 @@ class Feature extends ValueNotifier<bool> {
 
   void toggle() {
     value = !value;
-    _prefs.setBool(key, value);
+    unawaited(_prefs.setBool(key, value));
   }
 }

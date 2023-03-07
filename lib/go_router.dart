@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_base/pages/developer_page.dart';
+import 'pages/developer_page.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/state/app_state.dart';
-import 'package:flutter_base/state/user_state.dart';
+import '../state/app_state.dart';
+import '../state/user_state.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
 import '../scaffold/base_scaffold.dart';
@@ -23,7 +23,10 @@ class _Body extends StatelessWidget with GetItMixin {
           onPressed: get<AppState>().debugShowCheckedModeBanner.toggle,
           child: const Text('Toggle Debug Banner'),
         ),
-        if (watchX<UserState, bool>((e) => e.isLoggedIn)) const Text('Is Logged In') else const Text('Is Not Logged In'),
+        if (watchX<UserState, bool>((e) => e.isLoggedIn))
+          const Text('Is Logged In')
+        else
+          const Text('Is Not Logged In'),
         ElevatedButton(
           onPressed: () => get<UserState>().isLoggedIn.value = !get<UserState>().isLoggedIn.value,
           child: const Text('Toggle Logged In'),

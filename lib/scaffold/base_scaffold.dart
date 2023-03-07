@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/state/user_state.dart';
+import '../state/user_state.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:go_router/go_router.dart';
 
@@ -47,7 +47,10 @@ class BaseScaffoldState extends State<BaseScaffold> with GetItStateMixin {
         if (widget.showAppBar)
           SliverAppBar(
             actions: [
-              if (watchX<UserState, bool>((e) => e.isLoggedIn)) IconButton(onPressed: () {}, icon: const Icon(Icons.account_circle)) else ElevatedButton(onPressed: () {}, child: const Text('LOGIN')),
+              if (watchX<UserState, bool>((e) => e.isLoggedIn))
+                IconButton(onPressed: () {}, icon: const Icon(Icons.account_circle))
+              else
+                ElevatedButton(onPressed: () {}, child: const Text('LOGIN')),
             ],
           ),
         SliverToBoxAdapter(child: body),
@@ -74,19 +77,18 @@ class _TestOverlay extends StatelessWidget {
   const _TestOverlay();
 
   @override
-  Widget build(BuildContext context) {
-    return Positioned(
-        top: 16,
-        right: 16,
-        child: IgnorePointer(child: Builder(builder: (context) {
-          final style = Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black.withOpacity(.5), fontSize: 16);
-          return ColoredBox(
-              color: Colors.white30,
-              child: Column(children: [
-                Row(children: [
-                  AppVersionBuilder(builder: (_, version) => Text(' V$version', style: style)),
-                ])
-              ]));
-        })));
-  }
+  Widget build(BuildContext context) => Positioned(
+      top: 16,
+      right: 16,
+      child: IgnorePointer(child: Builder(builder: (context) {
+        final style =
+            Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black.withOpacity(.5), fontSize: 16);
+        return ColoredBox(
+            color: Colors.white30,
+            child: Column(children: [
+              Row(children: [
+                AppVersionBuilder(builder: (_, version) => Text(' V$version', style: style)),
+              ])
+            ]));
+      })));
 }

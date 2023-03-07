@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/state/user_state.dart';
+import '../state/user_state.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,8 +20,10 @@ class _Body extends StatelessWidget with GetItMixin {
     return Column(
       children: [
         ElevatedButton(onPressed: () => context.go('/developer'), child: const Text('Go to Developer page')),
-        ElevatedButton(onPressed: isLoggedIn ? () => context.go('/private') : null, child: const Text('Go to Private page')),
-        ElevatedButton(onPressed: !isLoggedIn ? () => context.go('/login') : null, child: const Text('Go to Login page')),
+        ElevatedButton(
+            onPressed: isLoggedIn ? () => context.go('/private') : null, child: const Text('Go to Private page')),
+        ElevatedButton(
+            onPressed: !isLoggedIn ? () => context.go('/login') : null, child: const Text('Go to Login page')),
         ElevatedButton(onPressed: isLoggedIn ? () => context.go('/logout') : null, child: const Text('Logout')),
         const Placeholder(),
       ],
